@@ -6,7 +6,7 @@ from setuptools import (
 
 setup(
     name='awsdjangoses',
-    version='0.0.2',
+    version='0.0.3',
     author='aibaq',
     description='Package for AWS SES bounces&complaints handling',
     url='https://github.com/aibaq/awsdjangoses',
