@@ -24,7 +24,7 @@ def handle_complaint(request):
     message = json.loads(message_body['Message'])
     complaint = message['complaint']
     for recipient in complaint['complainedRecipients']:
-        instance, _ = self.get_or_create(email=recipient['emailAddress'],
+        instance, created = self.get_or_create(email=recipient['emailAddress'],
             defaults={
                 'complaint': True,
             },
