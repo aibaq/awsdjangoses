@@ -37,3 +37,12 @@ class AmazonSesViewSet(ViewSet):
         elif request._request.META['HTTP_X_AMZ_SNS_MESSAGE_TYPE'] == 'Notification':
             services.handle_complaint(request)
         return Response()
+
+    @action(methods=['post'], detail=False)
+    def delivery(self, request):
+        if request._request.META[
+            'HTTP_X_AMZ_SNS_MESSAGE_TYPE'] == 'SubscriptionConfirmation':
+            return self.confirm_subscription(request)
+        elif request._request.META['HTTP_X_AMZ_SNS_MESSAGE_TYPE'] == 'Notification':
+            services.handle_delivery(request)
+        return Response()
