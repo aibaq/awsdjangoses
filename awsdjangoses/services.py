@@ -1,6 +1,7 @@
 import json
 
-from .models import AwsBlackList
+from .models import AwsBlackList, AwsDelivery
+from .utils import get_delivery_callback
 
 
 def handle_bounce(request):
@@ -32,3 +33,14 @@ def handle_complaint(request):
         if not created and not instance.complaint:
             instance.complaint = True
             instance.save(update_fields=['complaint'])
+
+
+def handle_delivery(request):
+    message_body = json.loads(request.body)
+    message = json.loads(message_body['Message'])
+    delivery_message = AwsDelivery.objects.create(
+        mail=message['mail'],
+        delivery=message['delivery'],
+    )
+    if callback := get_delivery_callback():
+        callback(delivery_message)
